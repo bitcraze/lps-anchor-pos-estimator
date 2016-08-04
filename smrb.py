@@ -6,7 +6,7 @@ import toa_3D_bundle, polynomials2matrix
 
 
 def system_misstoa_ransac_bundle(*argsin):
-    
+
 	dobundle = 1
 	if len(argin) < 2:
 		sys.ransac_threshold = 1
@@ -123,4 +123,3 @@ def system_misstoa_ransac_bundle(*argsin):
 
 
 print __name__
-
