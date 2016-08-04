@@ -1,5 +1,5 @@
-import numpy as np
 import multipol
+import numpy as np
 import scipy.linalg
 from scipy.sparse import csr_matrix
 

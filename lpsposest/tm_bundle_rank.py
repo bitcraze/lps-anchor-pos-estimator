@@ -1,9 +1,9 @@
 import multipol
 import numpy as np
 import scipy.linalg
+from calcresandjac import *
 from compactionmatrix import *
 from scipy.sparse import csr_matrix
-from calcresandjac import *
 
 
 def toa_misstoa_bundle_rank(sol, d):
