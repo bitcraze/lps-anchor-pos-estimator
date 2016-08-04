@@ -143,7 +143,7 @@ def toa_misstoa_bundle_rank(sol, d):
             bb = bb / bb[0]
             cc = np.linalg.norm(jac * dz) / np.linalg.norm(res)
 
-            print aa, bb, cc
+            print(aa, bb, cc)
 
         if np.linalg.norm(res2) < np.linalg.norm(res):
             param = param_new

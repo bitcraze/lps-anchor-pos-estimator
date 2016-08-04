@@ -20,4 +20,4 @@ def eqsize(*args):
 
     return varargout
 
-print __name__
+print(__name__)

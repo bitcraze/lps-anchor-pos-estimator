@@ -3,7 +3,7 @@ import scipy.linalg
 
 
 def issym(x):
-    return "sympy." in str(type(x))
+    return 'sympy.' in str(type(x))
 
 
 class Multipol:
@@ -30,7 +30,7 @@ class Multipol:
 
             elif type(coeffs) is list or type(coeffs) is np.ndarray:
                 for i in range(len(args), 0, -1):
-                                                    s[i] = Multipol(coeffs[i])
+                    s[i] = Multipol(coeffs[i])
 
                 s = np.reshape(s, coeffs.shape)
 
@@ -40,14 +40,14 @@ class Multipol:
                 # varibs =
                 # nvar = len(varibs)
 
-                # print "Subsituting ["
+                # print("Subsituting [")
                 # for i in range(nvar-2):
-                # 	print chr(varibs[i])
+                # 	print(chr(varibs[i]))
 
-                # print '] --> [' + chr(varibs(nvar))
+                # print('] --> [' + chr(varibs(nvar)))
 
                 # for i in range(nvar-2):
-                # 	print "x%u]\n"
+                # 	print("x%u]\n")
 
         elif len(args) == 2 and (type(args[0]) is int or type(args[0]) is list or type(args[0]) is np.ndarray) and \
                 (type(args[1]) is int or type(args[1]) is list or type(args[1]) is np.ndarray):
@@ -67,7 +67,7 @@ class Multipol:
         return s
 
 
-print __name__
+print(__name__)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     a = Multipol.multipol(42)

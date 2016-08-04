@@ -170,7 +170,7 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
 
             cc = np.linalg.norm(jac * dz) / np.linalg.norm(res)
 
-            print aa, bb, cc
+            print(aa, bb, cc)
 
         if np.linalg.norm(res2) < np.linalg.norm(res):
 
@@ -179,7 +179,7 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
         else:
 
             if debug:
-                print kkk, ' stalled'
+                print(kkk, ' stalled')
 
     xopt = xt
     yopt = yt
