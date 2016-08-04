@@ -1,4 +1,4 @@
-import multipol
+from multipol import *
 import numpy as np
 from scipy.linalg import *
 

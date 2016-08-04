@@ -2,7 +2,7 @@ import numpy as np
 import scipy.linalg
 from eqsize import *
 from nterms import *
-import multipol
+from multipol import *
 from unique import *
 
 

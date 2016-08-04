@@ -1,4 +1,4 @@
-import multipol
+from multipol import *
 import numpy as np
 import scipy.linalg
 from scipy.sparse import csr_matrix

@@ -1,4 +1,4 @@
-import multipol
+from multipol import *
 import numpy as np
 import smrb
 import toa_calc_d_from_xy
