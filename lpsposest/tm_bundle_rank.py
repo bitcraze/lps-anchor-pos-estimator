@@ -6,7 +6,7 @@ from compactionmatrix import *
 from scipy.sparse import csr_matrix
 
 
-def toa_misstoa_bundle_rank(sol, d):
+def tm_bundle_rank(sol, d):
     r_c = (sol.Bhat).shape
     mm = r_c[0]
     nn = r_c[1]
