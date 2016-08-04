@@ -6,6 +6,9 @@ from toa_calc_d_from_xy import toa_calc_d_from_xy
 from toa_normalize import toa_normalize
 
 
+data_file = sio.loadmat('testbitcrazerun.mat')
+
+d = data_file['d']
 
 def bitcrazerun():
     class structtype():
