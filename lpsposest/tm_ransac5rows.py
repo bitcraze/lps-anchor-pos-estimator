@@ -26,10 +26,10 @@ def toa_misstoa_ransac5rows(*argin):
         tmprows = np.random.permutation(m)
         tmprows = tmprows[0:4]
         auxvar1 = inl[tmprows, ]
-        auxvar2 = all(auxvar1)
-        okcol = auxvar2.ravel().nonzero()
+        auxvar2 = np.all(auxvar1)
+        okcol = (np.flatnonzero(auxvar2)).T
 
-        B = d2[tmprows, okcol]
+        B = d2[np.ix_(tmprows, okcol)]
 
         ntmp = B.shape[1]
         tmp2 = np.random.permutation(ntmp)
