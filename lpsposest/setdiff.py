@@ -1,7 +1,5 @@
-import multipol
 import numpy as np
-import scipy.linalg
-from eqsize import *
+from eqsize import eqsize
 
 
 def setdiff(eq1, eq2):
