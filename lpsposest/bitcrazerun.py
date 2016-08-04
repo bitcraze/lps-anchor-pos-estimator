@@ -46,3 +46,10 @@ def bitcrazerun():
     anchros, flightpath = toa_normalize(r3, s3)
 
     A1 = concatenate((range(0, anchors.shape[1]), anchors))
+
+
+    fileID = open('anchor_pos.yaml','w')
+    fileID.write('n_anchors: %s\n', str(anchors.shape[1]))
+    formatSpec = 'anchor%s_pos: [%s, %s, %s]\n'
+    fileID.write(formatSpec,A1)
+    fileID.close
