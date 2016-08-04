@@ -1,6 +1,6 @@
 import numpy as np
-from eqsize import *
 import scipy.linalg
+from eqsize import *
 
 
 def unique(eq):

@@ -1,4 +1,4 @@
-from multipol import *
+import multipol
 import numpy as np
 
 

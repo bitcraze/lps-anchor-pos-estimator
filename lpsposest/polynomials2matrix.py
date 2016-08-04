@@ -1,8 +1,8 @@
+import multipol
 import numpy as np
 import scipy.linalg
 from eqsize import *
 from nterms import *
-from multipol import *
 from unique import *
 
 
