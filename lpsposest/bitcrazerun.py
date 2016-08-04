@@ -1,15 +1,14 @@
-import multipol
 import numpy as np
-import smrb
-import toa_calc_d_from_xy
-import toa_normalize
+
+from lpsposest.toa_3D_bundle_with_smoother import toa_3D_bundle_with_smoother
+from smrb import system_misstoa_ransac_bundle
+from toa_calc_d_from_xy import toa_calc_d_from_xy
+from toa_normalize import toa_normalize
+
+
 # d = python table
 
-### Function 'bitcrazerun' ###
-
-
 def bitcrazerun():
-
     class structtype():
         pass
 
@@ -29,7 +28,7 @@ def bitcrazerun():
 
     mid = range(2, (d.shape[1]))
 
-    sys.cc = (concatenate((mid - 1, mid, mid + 1))).conj().T
+    sys.cc = (np.concatenate((mid - 1, mid, mid + 1))).conj().T
     sys.lambdacc = 1
     r2, s2, res, jac = toa_3D_bundle_with_smoother(d, r, s, inl2, sys)
 
@@ -39,17 +38,16 @@ def bitcrazerun():
     inl = (abs(resm) < 0.3)
 
     mid = range(2, d.shape[1])
-    sys.cc = (concatenate((mid - 1, mid, mid + 1))).conj().T
+    sys.cc = (np.concatenate((mid - 1, mid, mid + 1))).conj().T
     sys.lambdacc = 3
     r3, s3, res, jac = toa_3D_bundle_with_smoother(d, r, s, inl, sys)
 
-    anchros, flightpath = toa_normalize(r3, s3)
+    anchors, flightpath = toa_normalize(r3, s3)
 
-    A1 = concatenate((range(0, anchors.shape[1]), anchors))
+    A1 = np.concatenate((range(0, anchors.shape[1]), anchors))
 
-
-    fileID = open('anchor_pos.yaml','w')
+    fileID = open('anchor_pos.yaml', 'w')
     fileID.write('n_anchors: %s\n', str(anchors.shape[1]))
     formatSpec = 'anchor%s_pos: [%s, %s, %s]\n'
-    fileID.write(formatSpec,A1)
-    fileID.close
+    fileID.write(formatSpec, A1)
+    fileID.close()
