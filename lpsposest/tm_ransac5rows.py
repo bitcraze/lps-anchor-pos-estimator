@@ -4,7 +4,7 @@ import scipy.linalg
 from compactionmatrix import *
 
 
-def toa_misstoa_ransac5rows(*argin):
+def tm_ransac5rows(*argin):
 
     class struct():
         pass
