@@ -1,6 +1,7 @@
 from math import sqrt
 
 import numpy as np
+from scipy import interpolate
 from multipol import Multipol
 from polynomials2matrix import polynomials2matrix
 from tm_bundle_rank import tm_bundle_rank
@@ -95,8 +96,8 @@ def system_misstoa_ransac_bundle(d, sys):
     bb = cfm_linear0[:, -1]
     zz0 = -np.linalg.pinv(AA) * bb
 
-    # H = evaluate(Cv, np.ndarray([zz0],[0]))
-    # b = evaluate(bv,np.ndarray([zz0];[0]))
+    H = interpolate.interp1d(Cv, (np.append(zz0,0)).reshape(10,1))
+    b = interpolate.interp1d(bv,(np.append(zz0,0,)).reshape(10,1))
 
     if min(np.linalg.eig(H)):
         L = np.linalg.cholesky(np.linalg.inv(H)).T

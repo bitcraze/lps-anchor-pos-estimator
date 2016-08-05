@@ -1,6 +1,6 @@
 import numpy as np
 
-from lpsposest.eqsize import eqsize
+from eqsize import eqsize
 
 
 def unique(eq):
