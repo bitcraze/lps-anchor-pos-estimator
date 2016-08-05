@@ -6,7 +6,7 @@ def compactionmatrix(n):
     mat2 = np.eye(n - 1)
     cc = np.concatenate((mat1, mat2), 1)
     mat3 = np.zeros((1, n - 1))
-    auxcat = (np.append(1,mat3)).reshape(1,-1)
+    auxcat = (np.append(1, mat3)).reshape(1, -1)
     dd = np.concatenate((auxcat, cc))
 
     return cc, dd

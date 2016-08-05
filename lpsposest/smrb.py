@@ -1,9 +1,9 @@
 from math import sqrt
 
 import numpy as np
-from scipy import interpolate
 from multipol import Multipol
 from polynomials2matrix import polynomials2matrix
+from scipy import interpolate
 from tm_bundle_rank import tm_bundle_rank
 from tm_ransac5rows import tm_ransac5rows
 from tm_ransac_more_cols import tm_ransac_more_cols
@@ -96,8 +96,8 @@ def system_misstoa_ransac_bundle(d, sys):
     bb = cfm_linear0[:, -1]
     zz0 = -np.linalg.pinv(AA) * bb
 
-    H = interpolate.interp1d(Cv, (np.append(zz0,0)).reshape(10,1))
-    b = interpolate.interp1d(bv,(np.append(zz0,0,)).reshape(10,1))
+    H = interpolate.interp1d(Cv, (np.append(zz0, 0)).reshape(10, 1))
+    b = interpolate.interp1d(bv, (np.append(zz0, 0,)).reshape(10, 1))
 
     if min(np.linalg.eig(H)):
         L = np.linalg.cholesky(np.linalg.inv(H)).T
