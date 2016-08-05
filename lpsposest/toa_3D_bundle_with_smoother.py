@@ -1,7 +1,6 @@
 import numpy as np
-import multipol
-import numpy as np
-import scipy.linalg
+from math import sqrt
+from numpy import linalg
 from scipy.sparse import csr_matrix
 
 
@@ -11,8 +10,8 @@ def updatexy(x, y, dz):
     n = y.shape[1]
     dz1 = dz[1:3 * m]
     dz2 = dz[3 * m + 1, ]
-    xny = x + reshape(dz1, (3, m))
-    yny = y + reshape(dz2, (3, n))
+    xny = x + np.reshape(dz1, (3, m))
+    yny = y + np.reshape(dz2, (3, n))
 
     return xny, yny
 
@@ -31,7 +30,7 @@ def calcresandjac_cc(cc, x, y, lambdaa):
     m = x.shape[1]
     n = y.shape[1]
 
-    res = concatenate((res1.conj().T, res2.conj().T, res3.conj().T))
+    res = np.concatenate((res1.conj().T, res2.conj().T, res3.conj().T))
     res = lambdaa * res
     IIx = (range(1, nn + 1)).conj().T
     IIy = (range(nn + 1, 2 * nn + 1)).conj().T
@@ -49,11 +48,11 @@ def calcresandjac_cc(cc, x, y, lambdaa):
     JJ3y = (j3 - 1) * 3 + 2 + 3 * m
     JJ3z = (j3 - 1) * 3 + 3 + 3 * m
 
-    VV = ones(JJ1x.shape)
+    VV = np.ones(JJ1x.shape)
 
-    row_ind = concatenate((IIx, IIx, IIx, IIy, IIy, IIy, IIz, IIz, IIz))
-    col_ind = concatenate((JJx, JJx, JJx, JJy, JJy, JJy, JJz, JJz, JJz))
-    data = concatenate((VVx, VVx, VVx, VVy, VVy, VVy, VVz, VVz, VVz))
+    row_ind = np.concatenate((IIx, IIx, IIx, IIy, IIy, IIy, IIz, IIz, IIz))
+    col_ind = np.concatenate((JJx, JJx, JJx, JJy, JJy, JJy, JJz, JJz, JJz))
+    data = np.concatenate((VVx, VVx, VVx, VVy, VVy, VVy, VVz, VVz, VVz))
     M = 3 * nn
     N = 3 * m + 3 * n
 
@@ -88,9 +87,9 @@ def calcresandjac_toa(D, I, J, x, y):
     VV5 = -idd * Vt[:, 1]
     VV6 = -idd * Vt[:, 2]
 
-    row_ind = concatenate((II, II, II, II, II, II))
-    col_ind = concatenate((JJ, JJ, JJ, JJ, JJ, JJ))
-    data = concatenate((VV1, VV2, VV3, VV4, VV5, VV6))
+    row_ind = np.concatenate((II, II, II, II, II, II))
+    col_ind = np.concatenate((JJ, JJ, JJ, JJ, JJ, JJ))
+    data = np.concatenate((VV1, VV2, VV3, VV4, VV5, VV6))
     M = nn
     N = 3 * m + 3 * n
 
@@ -113,8 +112,8 @@ def calcresandjac(D, I, J, x, y, opts):
     res3 = []
     jac3 = []
 
-    res = concatenate((res1, res2, res3))
-    jac = concatenate((jac1, jac2, jac3))
+    res = np.concatenate((res1, res2, res3))
+    jac = np.concatenate((jac1, jac2, jac3))
 
     return res, jac
 
@@ -128,7 +127,7 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
         res, jac = calcresandjac(D, I, J, xt, yt, opts)
 
         dz = linalg.lstsq(-((jac.conj().T) * jac + 0.1 *
-                            eye(jac.shape[1])), (jac.conj().T) * res)
+                            np.eye(jac.shape[1])), (jac.conj().T) * res)
 
         xtn, ytn = updatexy(xt, yt, dz)
         res2, jac2 = calcresandjac(D, I, J, xt, yt, opts)
@@ -136,7 +135,7 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
         aa_1 = np.linalg.norm(res)
         aa_2 = np.linalg.norm(res + jac * dz)
         aa_3 = np.linalg.norm(res2)
-        aa = concatenate((aa_1, aa_2, aa_3), 1)
+        aa = np.concatenate((aa_1, aa_2, aa_3), 1)
 
         bb = aa
         bb = bb - bb[1]
@@ -163,7 +162,7 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
             aa_1 = np.linalg.norm(res)
             aa_2 = np.linalg.norm(res + jac * dz)
             aa_3 = np.linalg.norm(res2)
-            aa = concatenate((aa_1, aa_2, aa_3), 1)
+            aa = np.concatenate((aa_1, aa_2, aa_3), 1)
 
             bb = aa
             bb = bb - bb[1]
