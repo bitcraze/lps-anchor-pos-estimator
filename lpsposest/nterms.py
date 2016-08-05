@@ -1,5 +1,5 @@
-import numpy as np
-import scipy.linalg
+from numpy import size
+from numpy import zeros
 
 
 def nterms(p):

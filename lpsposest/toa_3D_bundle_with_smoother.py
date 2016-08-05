@@ -6,11 +6,10 @@ from scipy.sparse import csr_matrix
 
 
 def updatexy(x, y, dz):
-
     m = x.shape[1]
     n = y.shape[1]
     dz1 = dz[1:3 * m]
-    dz2 = dz[3 * m + 1, ]
+    dz2 = dz[3 * m + 1, :]
     xny = x + np.reshape(dz1, (3, m))
     yny = y + np.reshape(dz2, (3, n))
 
@@ -18,7 +17,6 @@ def updatexy(x, y, dz):
 
 
 def calcresandjac_cc(cc, x, y, lambdaa):
-
     j1 = cc[:, 0]
     j2 = cc[:, 1]
     j3 = cc[:, 2]
@@ -52,8 +50,9 @@ def calcresandjac_cc(cc, x, y, lambdaa):
     VV = np.ones(JJ1x.shape)
 
     row_ind = np.concatenate((IIx, IIx, IIx, IIy, IIy, IIy, IIz, IIz, IIz))
-    col_ind = np.concatenate((JJx, JJx, JJx, JJy, JJy, JJy, JJz, JJz, JJz))
-    data = np.concatenate((VVx, VVx, VVx, VVy, VVy, VVy, VVz, VVz, VVz))
+    col_ind = np.concatenate(
+        (JJ1x, JJ2x, JJ3x, JJ1y, JJ2y, JJ3y, JJ1z, JJ2z, JJ3z))
+    data = np.concatenate((VV, -2 * VV, VV, VV, -2 * VV, VV, VV, -2 * VV, VV))
     M = 3 * nn
     N = 3 * m + 3 * n
 
@@ -63,7 +62,6 @@ def calcresandjac_cc(cc, x, y, lambdaa):
 
 
 def calcresandjac_toa(D, I, J, x, y):
-
     nn = len(D)
     m = x.shape[1]
     n = y.shape[1]
@@ -89,7 +87,7 @@ def calcresandjac_toa(D, I, J, x, y):
     VV6 = -idd * Vt[:, 2]
 
     row_ind = np.concatenate((II, II, II, II, II, II))
-    col_ind = np.concatenate((JJ, JJ, JJ, JJ, JJ, JJ))
+    col_ind = np.concatenate((JJ1, JJ2, JJ3, JJ4, JJ5, JJ6))
     data = np.concatenate((VV1, VV2, VV3, VV4, VV5, VV6))
     M = nn
     N = 3 * m + 3 * n
@@ -100,7 +98,6 @@ def calcresandjac_toa(D, I, J, x, y):
 
 
 def calcresandjac(D, I, J, x, y, opts):
-
     res1, jac1 = calcresandjac_toa(D, I, J, x, y)
     if opts.cc.size != 0:
         res2, jac2 = calcresandjac_cc(opts.cc, x, y, opts.lambdacc)
@@ -119,9 +116,9 @@ def calcresandjac(D, I, J, x, y, opts):
     return res, jac
 
 
-def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
-
-    debug = 1
+def bundletoa(D, I, J, xt, yt, debug=1, opts=[]):
+    res = None
+    jac = None
 
     for kkk in range(0, 10):
 
@@ -133,33 +130,21 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
         xtn, ytn = updatexy(xt, yt, dz)
         res2, jac2 = calcresandjac(D, I, J, xt, yt, opts)
 
-        aa_1 = np.linalg.norm(res)
-        aa_2 = np.linalg.norm(res + jac * dz)
-        aa_3 = np.linalg.norm(res2)
-        aa = np.concatenate((aa_1, aa_2, aa_3), 1)
-
-        bb = aa
-        bb = bb - bb[1]
-        bb = bb / bb[0]
-
         cc = np.linalg.norm(jac * dz) / np.linalg.norm(res)
-
-        kkkk = 1
 
         if np.linalg.norm(res) < np.linalg.norm(res2):
 
             if cc > 1e-4:
 
                 kkkk = 1
-                while (kkkk < 50) and (np.linalg.norm(res) < np.linalg.norm(res2)):
-
+                while (kkkk < 50) and (
+                        np.linalg.norm(res) < np.linalg.norm(res2)):
                     dz = dz / 2
                     xtn, ytn = updatexy(xt, yt, dz)
                     res2, jac2 = calcresandjac(D, I, J, xtn, ytn, opts)
                     kkkk = kkkk + 1
 
         if debug:
-
             aa_1 = np.linalg.norm(res)
             aa_2 = np.linalg.norm(res + jac * dz)
             aa_3 = np.linalg.norm(res2)
@@ -189,14 +174,11 @@ def bundletoa(D, I, J, xt, yt, debug=0, opts=[]):
 
 
 def toa_3D_bundle_with_smoother(d, x, y, inliers=0, opts=[]):
-
     (I, J) = inliers.nonzero()
-    D = inliers.compress((inliers != 0).flat)
 
     ind = np.ravel_multi_index((I, J), dims=d.shape, order='F')
     D = d[ind]
 
-    opts = args[4]
-    xopt, yopt, res, jac = bundletoa(D, I, J, xt, yt, 0, opts)
+    xopt, yopt, res, jac = bundletoa(D, I, J, x, y, 0, opts)
 
     return xopt, yopt, res, jac

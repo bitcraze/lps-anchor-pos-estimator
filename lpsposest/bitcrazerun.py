@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.io as sio
 from smrb import system_misstoa_ransac_bundle
-from toa_3D_bundle_with_smoother import *
+from toa_3D_bundle_with_smoother import toa_3D_bundle_with_smoother
 from toa_calc_d_from_xy import toa_calc_d_from_xy
 from toa_normalize import toa_normalize
 

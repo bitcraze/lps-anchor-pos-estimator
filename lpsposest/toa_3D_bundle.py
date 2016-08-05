@@ -1,22 +1,13 @@
-import bundletoa
-import multipol
 import numpy as np
+from bundletoa import bundletoa
 
 
-def toa_3D_bundle(**args):
-
-    x = args[1]
-    y = args[2]
-
-    if len(args) < 4:
-        d = args[0]
-        inliers = (np.isfinite(d)).astype(int)
-
+def toa_3D_bundle(d, x, y, inliers):
     (I, J) = inliers.nonzero()
-    v = inliers.compress((a != 0), flat)
 
+    ind = np.ravel_multi_index((I, J), dims=d.shape)
     D = d[ind]
 
-    xopt, yout, res, jac = bundletoa(D, I, J, x, y)
+    xopt, yopt, res, jac = bundletoa(D, I, J, x, y)
 
     return xopt, yopt, res, jac

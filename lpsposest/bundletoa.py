@@ -1,11 +1,11 @@
-import multipol
+from math import sqrt
+
 import numpy as np
-from scipy.linalg import *
+from scipy import linalg
 from scipy.sparse import csr_matrix
 
 
 def calcresandjac(D, I, J, x, y):
-
     nn = len(D)
     m = x.shape[1]
     n = y.shape[1]
@@ -32,9 +32,9 @@ def calcresandjac(D, I, J, x, y):
     VV5 = -idd * Vt[:, 1]
     VV6 = -idd * Vt[:, 2]
 
-    row_ind = concatenate((II, II, II, II, II, II))
-    col_ind = concatenate((JJ, JJ, JJ, JJ, JJ, JJ))
-    data = concatenate((VV1, VV2, VV3, VV3, VV4, VV5, VV6))
+    row_ind = np.concatenate((II, II, II, II, II, II))
+    col_ind = np.concatenate((JJ1, JJ2, JJ3, JJ4, JJ5, JJ6))
+    data = np.concatenate((VV1, VV2, VV3, VV3, VV4, VV5, VV6))
     M = nn
     N = 3 * m + 3 * n
 
@@ -55,10 +55,12 @@ def updatexy(x, y, dz):
 
 
 def bundletoa(*args):
+    debug = True
 
-    if len(args) < 6:
-
-        debug = 0
+    xt = None
+    yt = None
+    res = None
+    jac = None
 
     for kkk in range(0, 30):
 
@@ -69,21 +71,12 @@ def bundletoa(*args):
         yt = args[4]
         res, jac = calcresandjac(D, I, J, xt, yt)
 
-        dz_a = -((jac.conj().T) * jac + eye(jac.shape[1]))
+        dz_a = -((jac.conj().T) * jac + np.eye(jac.shape[1]))
         dz_b = (jac.conj().T) * res
         dz = linalg.lstsq(dz_a, dz_b)
 
         xtn, ytn = updatexy(xt, yt, dz)
         res2, jac2 = calcresandjac(D, I, J, xtn, ytn)
-
-        aa_1 = np.linalg.norm(res)
-        aa_2 = np.linalg.norm(res + jac * dz)
-        aa_3 = np.linalg.norm(res2)
-        aa = concatenate((aa_1, aa_2, aa_3), 1)
-
-        bb = aa
-        bb = bb - bb[1]
-        bb = bb / bb[0]
 
         cc = np.linalg.norm(jac * dz) / np.linalg.norm(res)
 
@@ -92,16 +85,15 @@ def bundletoa(*args):
             if cc > 1e-4:
 
                 kkkk = 1
-                while (kkkk < 50) and (np.linalg.norm(res) < np.linalg.norm(res2)):
-
+                while (kkkk < 50) and (
+                        np.linalg.norm(res) < np.linalg.norm(res2)):
                     dz = dz / 2
                     xtn, ytn = updatexy(xt, yt, dz)
                     res2, jac2 = calcresandjac(D, I, J, xtn, ytn)
                     kkkk = kkkk + 1
 
         if debug:
-
-            aa = concatenate((np.linalg.norm(res), np.linalg.norm(
+            aa = np.concatenate((np.linalg.norm(res), np.linalg.norm(
                 res + jac * dz), np.linalg.norm(res)), 1)
             bb = aa
             bb = bb - bb[1]
@@ -110,7 +102,7 @@ def bundletoa(*args):
 
             print(aa, bb, cc)
 
-        if norm(res2) < norm(res):
+        if np.linalg.norm(res2) < np.linalg.norm(res):
 
             xt = xtn
             yt = ytn

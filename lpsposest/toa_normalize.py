@@ -1,10 +1,9 @@
-import scipy
-
 import numpy as np
+import scipy
+from numpy.core.umath import sign
 
 
 def toa_normalize(x0, y0):
-
     xdim = x0.shape[0]
     m = x0.shape[1]
     n = x0.shape[1]
@@ -18,7 +17,7 @@ def toa_normalize(x0, y0):
 
     x = (q.conj().T) * x
     y = (q.conj().T) * y
-    M = dian(np.sign(diag(qr_a)))
+    M = np.diag(sign(np.diag(qr_a)))
     x1 = M * x
     y1 = M * y
 

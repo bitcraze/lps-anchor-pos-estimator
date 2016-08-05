@@ -1,27 +1,21 @@
-import multipol
+from math import sqrt
+
 import numpy as np
-import scipy.linalg
-from polynomials2matrix import *
-from tm_bundle_rank import *
-from tm_ransac5rows import *
-from tm_ransac_more_cols import *
-from tm_ransac_more_rows import *
-from toa_3D_bundle import *
-from toa_normalize import *
+from multipol import Multipol
+from polynomials2matrix import polynomials2matrix
+from tm_bundle_rank import tm_bundle_rank
+from tm_ransac5rows import tm_ransac5rows
+from tm_ransac_more_cols import tm_ransac_more_cols
+from tm_ransac_more_rows import tm_ransac_more_rows
+from toa_3D_bundle import toa_3D_bundle
+from toa_calc_d_from_xy import toa_calc_d_from_xy
+from toa_normalize import toa_normalize
 
 
-def system_misstoa_ransac_bundle(*argsin):
-
+def system_misstoa_ransac_bundle(d, sys):
     dobundle = 1
-    if len(argsin) < 2:
-        sys.ransac_threshold = 1
-        sys.ransac_k = 70
-        sys.ransac_threshold2 = 1
-        sys.ransac_k2 = 20
-        sys.min_inliers2 = 8
 
-    d = argsin[0]
-    sys = argsin[1]
+    sol = None
 
     for kk in range(1, 2):
 
@@ -52,31 +46,41 @@ def system_misstoa_ransac_bundle(*argsin):
 
     Bhat = sol.Bhat
     D = 3
-    u, s, v = svd(Bhat[2:, 2:])
+    u, s, v = np.svd(Bhat[2:, 2:])
     xr = u[:, 0:D - 1]
     yr = (s[0:D - 1, 0:D - 1]) * (v[:, 0:D - 1])
-    auxvar1 = zeros((D, 1))
-    xtp = concatenate((auxvar1, xr))
-    yt = concatenate((auxvar1, yr))
+    auxvar1 = np.zeros((D, 1))
+    xtp = np.concatenate((auxvar1, xr))
+    yt = np.concatenate((auxvar1, yr))
     xt = xtp / (-2)  # maybe np.divide(xtp,-2)
     Bhatcol1 = Bhat[:, 0]
 
     nr_of_unknowns = (D * (D + 1)) / 2 + D + 1
-    E = eye(nr_of_unknowns)
 
-    for i in range(1, nr_of_unknowns + 1):
-        xv[i] = multipol(1, zeros(nr_of_unknowns, 1))
+    xv = [None] * nr_of_unknowns
+    for i in range(0, nr_of_unknowns):
+        xv[i] = Multipol.multipol(1, np.zeros(nr_of_unknowns, 1))
 
-    one = multipol(1, zeros(nrofunknowns, 1))
-    zero = multipol(0, zeros(nrofunknowns, 1))
+    bv = None
+    Cv = None
 
     if D == 3:
-        bv = np.ndarray([xv[6], xv[7], xv[9]])
+        Cv1 = np.concatenate((xv[1], xv[2], xv[3]), 1)
+        Cv2 = np.concatenate((xv[2], xv[4], xv[5]), 1)
+        Cv3 = np.concatenate((xv[3], xv[5], xv[6]), 1)
+        Cv = np.concatenate((Cv1, Cv2, Cv3))
+
+        bv = np.concatenate((xv[6], xv[7], xv[9]), 1)
         bv = bv.conj().T
     elif D == 2:
-        bv = np.ndarray([xv[3], xv[5]])
+        Cv1 = np.concatenate((xv[1], xv[2]), 1)
+        Cv2 = np.concatenate((xv[2], xv[3]), 1)
+        Cv = np.concatenate((Cv1, Cv2))
+
+        bv = np.concatenate((xv[3], xv[5]), 1)
         bv = bv.conj().T
 
+    eqs = [None] * xt.shape[1]
     for i in range(1, xt.shape[1]):
         eqs[i - 1] = (-2 * (xt[:, i]).conj().T * bv +
                       (xt[:, i]).conj().T * Cv * xt[:, i]) - Bhatcol1[i]
@@ -84,28 +88,28 @@ def system_misstoa_ransac_bundle(*argsin):
     eqs_linear = eqs
     cfm_linear, mons_linear = polynomials2matrix(eqs_linear)
     cfm_linear = np.asarray(cfm_linear)
-    cfm_linear = cfm_linear / \
-        tile(sqrt(sum(cfm_linear**2, 2)), 1, cfm_linear.shape[1])
+    cfm_linear = cfm_linear / np.tile(sqrt(sum(cfm_linear ** 2, 2)),
+                                      (1, cfm_linear.shape[1]))
     cfm_linear0 = cfm_linear
     AA = cfm_linear0[:, 1:-2]
     bb = cfm_linear0[:, -1]
-    zz0 = -linalg.pinv(AA) * bb
+    zz0 = -np.linalg.pinv(AA) * bb
 
     # H = evaluate(Cv, np.ndarray([zz0],[0]))
     # b = evaluate(bv,np.ndarray([zz0];[0]))
 
-    if min(linalg.eig(H)):
-        L = linalg.cholesky(linalg.inv(H)).T
+    if min(np.linalg.eig(H)):
+        L = np.linalg.cholesky(np.linalg.inv(H)).T
     else:
-        mins = min(linalg.eig(H))
-        H = H + (-mins + 0.1) * eye(3)
-        L = linalg.cholesky(linalg.inv(H)).T
+        mins = min(np.linalg.eig(H))
+        H = H + (-mins + 0.1) * np.eye(3)
+        L = np.linalg.cholesky(np.linalg.inv(H)).T
 
-    r00 = linalg.inv(L.conj().T) * xt
-    s00 = L * (yt + tile(b, 1, Bhat.shape[1]))
+    r00 = np.linalg.inv(L.conj().T) * xt
+    s00 = L * (yt + np.tile(b, (1, Bhat.shape[1])))
 
-    r0 = zeros(3, d.size[0])
-    s0 = zeros(3, d.size[1])
+    r0 = np.zeros(3, d.size[0])
+    s0 = np.zeros(3, d.size[1])
 
     r0[:, sol.rows] = r00
     s0[:, sol.cols] = s00
