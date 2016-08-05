@@ -1,6 +1,6 @@
+import bundletoa
 import multipol
 import numpy as np
-import bundletoa
 
 
 def toa_3D_bundle(**args):

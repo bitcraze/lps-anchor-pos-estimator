@@ -29,7 +29,7 @@ def tm_ransac5rows(*argin):
         tmprows = np.random.permutation(m)
         tmprows = tmprows[0:4]
         auxvar1 = inl[tmprows, ]
-        auxvar2 = ((np.all(auxvar1,axis=0)).astype(int)).T
+        auxvar2 = ((np.all(auxvar1, axis=0)).astype(int)).T
         okcol = (np.flatnonzero(auxvar2)).T
 
         B = d2[np.ix_(tmprows, okcol)]

@@ -1,6 +1,7 @@
 import numpy as np
 from multipol import *
 
+
 def issym(x):
     return 'sympy.' in str(type(x))
 

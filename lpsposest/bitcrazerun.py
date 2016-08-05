@@ -1,7 +1,7 @@
 import numpy as np
 import scipy.io as sio
-from toa_3D_bundle_with_smoother import *
 from smrb import system_misstoa_ransac_bundle
+from toa_3D_bundle_with_smoother import *
 from toa_calc_d_from_xy import toa_calc_d_from_xy
 from toa_normalize import toa_normalize
 
@@ -9,6 +9,7 @@ from toa_normalize import toa_normalize
 data_file = sio.loadmat('testbitcrazerun.mat')
 
 d = data_file['d']
+
 
 class structtype():
     pass
