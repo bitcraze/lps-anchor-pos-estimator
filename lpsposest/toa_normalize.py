@@ -1,6 +1,6 @@
-import multipol
+import scipy
+
 import numpy as np
-from scipy.linalg import *
 
 
 def toa_normalize(x0, y0):
@@ -10,8 +10,8 @@ def toa_normalize(x0, y0):
     n = x0.shape[1]
 
     t = -x0[:, 1]
-    x = x0 + tile(t, (1, m))
-    y = y0 + tile(t, (1, n))
+    x = x0 + np.tile(t, (1, m))
+    y = y0 + np.tile(t, (1, n))
 
     qr_a = x[:, 2:(1 + xdim)]
     q, r = scipy.linalg.qr(qr_a)
