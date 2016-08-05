@@ -26,7 +26,7 @@ def tm_ransac_more_cols(d, sol, sys):
         maxnrinl = 0
         for kk in range(0, sys.ransac_k2):
 
-            okrows = (np.isfinite(d2n)).nonzero()
+            okrows = ((np.isfinite(d2n)).astype(int)).nonzero()
             tmp = np.random.permutation(len(okrows))
 
             if len(tmp) >= 4:

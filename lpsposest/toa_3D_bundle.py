@@ -10,7 +10,7 @@ def toa_3D_bundle(**args):
 
     if len(args) < 4:
         d = args[0]
-        inliers = np.isfinite(d)
+        inliers = (np.isfinite(d)).astype(int)
 
     (I, J) = inliers.nonzero()
     v = inliers.compress((a != 0), flat)

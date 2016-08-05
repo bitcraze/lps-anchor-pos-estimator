@@ -15,21 +15,21 @@ def tm_ransac5rows(*argin):
         sys.ransac_k = 5000
 
     maxnrinl = 0
-    
+
     d = argin[0]
     sys = argin[1]
 
     for iii in range(0, sys.ransac_k):
 
         d2 = d ** 2
-        inl = np.isfinite(d2)
+        inl = (np.isfinite(d2)).astype(int)
         r_c = d2.shape
         m = r_c[0]
         n = r_c[1]
         tmprows = np.random.permutation(m)
         tmprows = tmprows[0:4]
         auxvar1 = inl[tmprows, ]
-        auxvar2 = np.all(auxvar1)
+        auxvar2 = ((np.all(auxvar1,axis=0)).astype(int)).T
         okcol = (np.flatnonzero(auxvar2)).T
 
         B = d2[np.ix_(tmprows, okcol)]
