@@ -2,6 +2,7 @@ import multipol
 import numpy as np
 import scipy.linalg 
 from tm_bundle_rank import *
+from tm_ransac5rows import *
 from tm_ransac_more_rows import *
 from tm_ransac_more_cols import *
 from toa_normalize import *
@@ -12,7 +13,7 @@ from polynomials2matrix import *
 def system_misstoa_ransac_bundle(*argsin):
 
 	dobundle = 1
-	if len(argin) < 2:
+	if len(argsin) < 2:
 		sys.ransac_threshold = 1
 		sys.ransac_k = 70
 		sys.ransac_threshold2 = 1
@@ -55,8 +56,8 @@ def system_misstoa_ransac_bundle(*argsin):
 	xr = u[:,0:D-1]
 	yr = (s[0:D-1,0:D-1])*(v[:,0:D-1])
 	auxvar1 = zeros((D,1))
-	xtp = concatenate((auxvar1 xr))
-	yt = concatenate((auxvar1 yr))
+	xtp = concatenate((auxvar1, xr))
+	yt = concatenate((auxvar1, yr))
 	xt = xtp / (-2) # maybe np.divide(xtp,-2)
 	Bhatcol1 = Bhat[:,0]
 
@@ -70,13 +71,13 @@ def system_misstoa_ransac_bundle(*argsin):
 	zero = multipol(0,zeros(nrofunknowns,1))
 
 	if D == 3:
-		bv = np.ndarray([xv[6] xv[7] xv[9]])
+		bv = np.ndarray([xv[6], xv[7], xv[9]])
 		bv = bv.conj().T
 	elif D == 2:
-		bv = np.ndarray([xv[3] xv[5]])
+		bv = np.ndarray([xv[3], xv[5]])
 		bv = bv.conj().T
 
-	for i = 1:xt.shape[1]:
+	for i in range(1,xt.shape[1]):
 		eqs[i-1] = (-2 * (xt[:,i]).conj().T * bv + (xt[:,i]).conj().T * Cv * xt[:,i]) - Bhatcol1[i]
 
 	eqs_linear = eqs

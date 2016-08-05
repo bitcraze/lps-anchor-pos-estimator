@@ -1,8 +1,8 @@
 import multipol
 import numpy as np
 import scipy.linalg
-from compactionmatrix import*
-from setdiff include*
+from compactionmatrix import *
+from setdiff import *
 
 
 def tm_ransac_more_rows(d, sol, sys):

@@ -1,6 +1,5 @@
 import numpy as np
-import scipy.linalg
-
+from multipol import *
 
 def issym(x):
     return 'sympy.' in str(type(x))
@@ -30,7 +29,7 @@ class Multipol:
 
             elif type(coeffs) is list or type(coeffs) is np.ndarray:
                 for i in range(len(args), 0, -1):
-                    s[i] = Multipol(coeffs[i])
+                    s[i] = multipol(coeffs[i])
 
                 s = np.reshape(s, coeffs.shape)
 

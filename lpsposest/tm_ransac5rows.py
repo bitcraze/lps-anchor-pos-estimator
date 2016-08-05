@@ -6,7 +6,7 @@ from compactionmatrix import *
 
 def tm_ransac5rows(*argin):
 
-    class struct():
+    class solstruct():
         pass
     sol = solstruct()
 
@@ -15,6 +15,9 @@ def tm_ransac5rows(*argin):
         sys.ransac_k = 5000
 
     maxnrinl = 0
+    
+    d = argin[0]
+    sys = argin[1]
 
     for iii in range(0, sys.ransac_k):
 
