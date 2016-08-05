@@ -1,5 +1,6 @@
-import numpy as np
 from math import sqrt
+
+import numpy as np
 from numpy import linalg
 from scipy.sparse import csr_matrix
 

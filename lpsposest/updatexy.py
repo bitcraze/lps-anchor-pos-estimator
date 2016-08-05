@@ -1,7 +1,3 @@
-import multipol
-import numpy as np
-
-
 def updatexy(param, dz):
 
     param_new = param

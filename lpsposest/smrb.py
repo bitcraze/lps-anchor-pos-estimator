@@ -1,14 +1,13 @@
 import multipol
 import numpy as np
 import scipy.linalg
+from polynomials2matrix import *
 from tm_bundle_rank import *
 from tm_ransac5rows import *
-from tm_ransac_more_rows import *
 from tm_ransac_more_cols import *
+from tm_ransac_more_rows import *
+from toa_3D_bundle import *
 from toa_normalize import *
-from toa_3D_bundle import *
-from toa_3D_bundle import *
-from polynomials2matrix import *
 
 
 def system_misstoa_ransac_bundle(*argsin):
