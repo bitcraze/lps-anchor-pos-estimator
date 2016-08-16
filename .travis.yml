@@ -4,12 +4,10 @@ matrix:
           language: python
           sudo: required
           services: docker
-          script: docker run --rm -v ${PWD}:/module bitcraze/builder ./tools/build/build 
+          script: docker run --rm -v ${PWD}:/module bitcraze/builder ./tools/build/build
+    exclude:
         - os: linux
           language: python
-          before_install:
-            - sudo apt-get update -qq
-            - sudo apt-get install -qq python-numpy python-scipy python3-numpy python3-scipy
           env: TOXENV=py27,py33,py34
           install: pip install tox
           script: tox
@@ -19,8 +17,6 @@ matrix:
           before_install: 
             - brew update
             - brew install python
-            - brew install homebrew/python/numpy
-            - brew install homebrew/python/scipy
           install: pip install tox
           env: TOXENV=py27
           script: tox
