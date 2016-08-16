@@ -1,6 +1,7 @@
 matrix:
     include:
         - os: linux
+          language: python
           sudo: required
           services: docker
           script: docker run --rm -v ${PWD}:/module bitcraze/builder ./tools/build/build 

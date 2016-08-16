@@ -1,8 +1,7 @@
 -e .
 
 coverage
-pre-commit
-tox
-
 numpy
+pre-commit
 scipy
+tox
