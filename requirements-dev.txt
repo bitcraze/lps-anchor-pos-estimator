@@ -1,7 +1,5 @@
 -e .
 
 coverage
-numpy
 pre-commit
-scipy
 tox
