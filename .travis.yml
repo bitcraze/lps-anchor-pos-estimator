@@ -9,7 +9,7 @@ matrix:
           language: python
           before_install:
             - sudo apt-get update -qq
-            - sudo apt-get install -qq numpy scipy
+            - sudo apt-get install -qq python-numpy python-scipy python3-numpy python3-scipy
           env: TOXENV=py27,py33,py34
           install: pip install tox
           script: tox
@@ -18,7 +18,9 @@ matrix:
           sudo: required
           before_install: 
             - brew update
-            - brew install python numpy scipy
+            - brew install python
+            - brew install homebrew/python/numpy
+            - brew install homebrew/python/scipy
           install: pip install tox
           env: TOXENV=py27
           script: tox
