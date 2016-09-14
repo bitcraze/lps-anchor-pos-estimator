@@ -24,7 +24,7 @@ def tm_ransac5rows(d, sys):
         r_c = d2.shape
         m = r_c[0]
         tmprows = random.permutation(m)
-        tmprows = tmprows[0:4]
+        tmprows = tmprows[0:5]
         auxvar1 = inl[tmprows, :]
         auxvar2 = ((np.all(auxvar1, axis=0)).astype(int)).T
         okcol = (np.flatnonzero(auxvar2)).T
@@ -35,17 +35,16 @@ def tm_ransac5rows(d, sys):
         tmp2 = random.permutation(ntmp)
 
         if ntmp > 5:
-            tmp21 = tmp2[1:4]
-            tmp22 = tmp2[5:, ]
+            tmp21 = tmp2[0:4]
+            tmp22 = tmp2[4:, ]
 
-            cl = compactionmatrix(5)
-            cl = np.reshape(cl,(-1,1))
-            # cr = compactionmatrix(tmp2.shape[1])
-            cr = 1
-            
-            Btmp = cl * B[:, tmp2] * cr.conj().T
+            cl,_ = compactionmatrix(5)
 
-            B1 = Btmp[:, 0:2]
+            cr, _ = compactionmatrix(tmp2.shape[0])
+            Btmp1 = np.dot(cl, B[:, tmp2])
+            Btmp = np.dot(Btmp1,cr.conj().T)
+
+            B1 = Btmp[:, 0:3]
             B2 = Btmp[:, 3:]
 
             u, s, v = linalg.svd(B1)
