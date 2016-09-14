@@ -39,8 +39,10 @@ def tm_ransac5rows(d, sys):
             tmp22 = tmp2[5:, ]
 
             cl = compactionmatrix(5)
-            cr = compactionmatrix(tmp2.shape[1])
-
+            cl = np.reshape(cl,(-1,1))
+            # cr = compactionmatrix(tmp2.shape[1])
+            cr = 1
+            
             Btmp = cl * B[:, tmp2] * cr.conj().T
 
             B1 = Btmp[:, 0:2]
