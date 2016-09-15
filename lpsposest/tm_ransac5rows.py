@@ -38,11 +38,11 @@ def tm_ransac5rows(d, sys):
             tmp21 = tmp2[0:4]
             tmp22 = tmp2[4:, ]
 
-            cl,_ = compactionmatrix(5)
+            cl, _ = compactionmatrix(5)
 
             cr, _ = compactionmatrix(tmp2.shape[0])
             Btmp1 = np.dot(cl, B[:, tmp2])
-            Btmp = np.dot(Btmp1,cr.conj().T)
+            Btmp = np.dot(Btmp1, cr.conj().T)
 
             B1 = Btmp[:, 0:3]
             B2 = Btmp[:, 3:]
