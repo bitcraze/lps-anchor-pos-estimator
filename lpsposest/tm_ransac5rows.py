@@ -36,9 +36,9 @@ def tm_ransac5rows(d, sys):
 
         if ntmp > 5:
             tmp21tup = tmp2[0:4]
-            tmp21 = np.reshape(tmp21tup,(1, -1))
+            tmp21 = np.reshape(tmp21tup, (1, -1))
             tmp22tup = tmp2[4:, ]
-            tmp22 = np.reshape(tmp22tup,(1, -1))
+            tmp22 = np.reshape(tmp22tup, (1, -1))
             print(tmp21.shape)
             print(tmp22.shape)
             cl, _ = compactionmatrix(5)
