@@ -35,9 +35,12 @@ def tm_ransac5rows(d, sys):
         tmp2 = random.permutation(ntmp)
 
         if ntmp > 5:
-            tmp21 = tmp2[0:4]
-            tmp22 = tmp2[4:, ]
-
+            tmp21tup = tmp2[0:4]
+            tmp21 = np.reshape(tmp21tup,(1, -1))
+            tmp22tup = tmp2[4:, ]
+            tmp22 = np.reshape(tmp22tup,(1, -1))
+            print(tmp21.shape)
+            print(tmp22.shape)
             cl, _ = compactionmatrix(5)
 
             cr, _ = compactionmatrix(tmp2.shape[0])
@@ -48,14 +51,17 @@ def tm_ransac5rows(d, sys):
             B2 = Btmp[:, 3:]
 
             u, s, v = linalg.svd(B1)
-            u4 = u[:, 3]
+            u4tup = u[:, 3]
+            u4 = np.reshape(u4tup, (-1,1))
 
             if 0:
                 abs((u4.conj().T) * B2)
 
             Imiss = isnan(d)
-            auxvar3 = abs((u4.conj().T) * B2)
-            okind = (auxvar3 > sys.ransac_threshold).nonzero()
+            auxvar3 = abs(np.dot((u4.conj().T), B2))
+            okindtup = (auxvar3 > sys.ransac_threshold).nonzero()
+            okindmat = np.asarray(okindtup)
+            okind = np.reshape(okindmat, (1, -1))
             inlim = zeros(d.shape)
             inlim = inlim - Imiss
             auxvar4 = concatenate((tmp21, tmp22[okind]), 1)
