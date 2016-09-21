@@ -39,8 +39,6 @@ def tm_ransac5rows(d, sys):
             tmp21 = np.reshape(tmp21tup, (1, -1))
             tmp22tup = tmp2[4:, ]
             tmp22 = np.reshape(tmp22tup, (1, -1))
-            print(tmp21.shape)
-            print(tmp22.shape)
             cl, _ = compactionmatrix(5)
 
             cr, _ = compactionmatrix(tmp2.shape[0])
@@ -64,23 +62,27 @@ def tm_ransac5rows(d, sys):
             okind = np.reshape(okindmat, (1, -1))
             inlim = zeros(d.shape)
             inlim = inlim - Imiss
-            auxvar4 = concatenate((tmp21, tmp22[okind]), 1)
-            inlim[tmprows, okcol[auxvar4]] = ones((5, 4 + okind.size))
+            tmpconcat = concatenate((tmp21, tmp22[0, okind - 1]), 1)
+            tmprows = np.reshape(tmprows, (-1, 1))
+            inlim[tmprows, okcol[tmpconcat]] = ones((5, 4 + okind.size))
             nrinl = 4 + okind.size
 
             if nrinl > maxnrinl:
                 maxnrinl = nrinl
 
                 sol.rows = tmprows
-                sol.cols = okcol[(concatenate((tmp21, tmp22[okind]), 1))]
+                concatmat = concatenate((tmp21, tmp22[0, okind - 1]), 1)
+                sol.cols = okcol[(concatmat)]
                 sol.row1 = sol.rows[1]
-                sol.col1 = sol.cols[1]
+                sol.col1 = sol.cols[0, 0]
                 sol.inlmatrix = inlim
                 B = d2[sol.rows, sol.cols]
                 cl, dl = compactionmatrix(B.shape[0])
                 cr, dr = compactionmatrix(B.shape[1])
-                Bhat = dl * B * dr.conj().T
-                Btilde = cl * B * cr.conj().T
+                Bhatdotprod = np.dot(dl, B)
+                Bhat = np.dot(Bhatdotprod, dr.conj().T)
+                Btildedotprod = np.dot(cl, B)
+                Btilde = np.dot(Btildedotprod, cr.conj().T)
                 u, s, vh = linalg.svd(Btilde)
                 v = vh.T
                 s[3:, ] = zeros(s.shape[0] - 3, s.shape[1])
