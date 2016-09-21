@@ -52,7 +52,7 @@ def tm_ransac5rows(d, sys):
 
             u, s, v = linalg.svd(B1)
             u4tup = u[:, 3]
-            u4 = np.reshape(u4tup, (-1,1))
+            u4 = np.reshape(u4tup, (-1, 1))
 
             if 0:
                 abs((u4.conj().T) * B2)
