@@ -40,6 +40,7 @@ d = data_file['d']
 class structtype():
     pass
 
+
 sys = structtype()
 
 sys.ransac_threshold = 2

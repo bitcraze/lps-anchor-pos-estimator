@@ -91,18 +91,18 @@ def bundletoa(*args):
     for kkk in range(0, 30):
 
         D = args[0]
-        I = args[1]
+        i = args[1]
         J = args[2]
         xt = args[3]
         yt = args[4]
-        res, jac = calcresandjac(D, I, J, xt, yt)
+        res, jac = calcresandjac(D, i, J, xt, yt)
 
         dz_a = -((jac.conj().T) * jac + np.eye(jac.shape[1]))
         dz_b = (jac.conj().T) * res
         dz = linalg.lstsq(dz_a, dz_b)
 
         xtn, ytn = updatexy(xt, yt, dz)
-        res2, jac2 = calcresandjac(D, I, J, xtn, ytn)
+        res2, jac2 = calcresandjac(D, i, J, xtn, ytn)
 
         cc = np.linalg.norm(jac * dz) / np.linalg.norm(res)
 
@@ -115,7 +115,7 @@ def bundletoa(*args):
                         np.linalg.norm(res) < np.linalg.norm(res2)):
                     dz = dz / 2
                     xtn, ytn = updatexy(xt, yt, dz)
-                    res2, jac2 = calcresandjac(D, I, J, xtn, ytn)
+                    res2, jac2 = calcresandjac(D, i, J, xtn, ytn)
                     kkkk = kkkk + 1
 
         if debug:
