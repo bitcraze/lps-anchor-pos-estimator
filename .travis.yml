@@ -5,18 +5,3 @@ matrix:
           sudo: required
           services: docker
           script: docker run --rm -v ${PWD}:/module bitcraze/builder ./tools/build/build
-    exclude:
-        - os: linux
-          language: python
-          env: TOXENV=py27,py33,py34
-          install: pip install tox
-          script: tox
-        - os: osx
-          language: python
-          sudo: required
-          before_install: 
-            - brew update
-            - brew install python
-          install: pip install tox
-          env: TOXENV=py27
-          script: tox
