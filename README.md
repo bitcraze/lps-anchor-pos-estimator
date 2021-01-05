@@ -1,4 +1,4 @@
-# crazyflie-anchor-location-estimator [![Build Status](https://api.travis-ci.org/bitcraze/lps-anchor-pos-estimator.svg)](https://travis-ci.org/bitcraze/lps-anchor-pos-estimator)
+# crazyflie-anchor-location-estimator [![CI](https://github.com/bitcraze/lps-anchor-pos-estimator/workflows/CI/badge.svg)](https://github.com/bitcraze/lps-anchor-pos-estimator/actions?query=workflow%3ACI)
 
 The aim of this project is to create a python library that uses range samples
 from a positioning system as input, for instance the Loco Position System, to 
