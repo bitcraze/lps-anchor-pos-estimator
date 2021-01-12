@@ -1,3 +1,5 @@
+This project is not active anymore and has been archived.
+
 # crazyflie-anchor-location-estimator [![CI](https://github.com/bitcraze/lps-anchor-pos-estimator/workflows/CI/badge.svg)](https://github.com/bitcraze/lps-anchor-pos-estimator/actions?query=workflow%3ACI)
 
 The aim of this project is to create a python library that uses range samples

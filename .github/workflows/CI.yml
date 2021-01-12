@@ -13,5 +13,3 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Check and build
-      run: docker run --rm -v ${PWD}:/module bitcraze/builder ./tools/build/build 
